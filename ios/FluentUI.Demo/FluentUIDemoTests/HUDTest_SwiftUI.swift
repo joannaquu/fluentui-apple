@@ -11,6 +11,7 @@ class HUDTestSwiftUI: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        continueAfterFailure = false
         app.launch()
         navigateToControl(app: app, controlName: controlName)
         app.staticTexts["SwiftUI Demo"].tap()

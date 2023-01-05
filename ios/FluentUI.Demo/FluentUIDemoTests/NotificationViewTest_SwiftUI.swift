@@ -11,6 +11,7 @@ class NotificationViewTestSwiftUI: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        continueAfterFailure = false
         app.launch()
         navigateToControl(app: app, controlName: controlName)
         app.buttons["Show"].firstMatch.tap()
