@@ -5,8 +5,16 @@
 
 import XCTest
 
-class PillButtonBarTest: BaseTest {
-    override var controlName: String { "PillButtonBar" }
+class PillButtonBarTest: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "PillButtonBar"
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        continueAfterFailure = false
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
+    }
 
     // launch test that ensures the demo app does not crash and is on the correct control page
     func testLaunch() throws {

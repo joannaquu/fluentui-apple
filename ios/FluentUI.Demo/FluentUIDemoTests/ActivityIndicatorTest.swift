@@ -5,8 +5,16 @@
 
 import XCTest
 
-class ActivityIndicatorTest: BaseTest {
-    override var controlName: String { "ActivityIndicator" }
+class ActivityIndicatorTest: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "ActivityIndicator"
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        continueAfterFailure = false
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
+    }
 
     // launch test that ensures the demo app does not crash and is on the correct control page
     func testLaunch() throws {

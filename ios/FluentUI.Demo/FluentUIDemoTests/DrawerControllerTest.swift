@@ -5,8 +5,16 @@
 
 import XCTest
 
-class DrawerControllerTest: BaseTest {
-    override var controlName: String { "DrawerController" }
+class DrawerControllerTest: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "DrawerController"
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        continueAfterFailure = false
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
+    }
 
     // launch test that ensures the demo app does not crash and is on the correct control page
     func testLaunch() throws {

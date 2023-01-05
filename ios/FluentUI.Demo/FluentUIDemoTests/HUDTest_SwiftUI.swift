@@ -5,11 +5,14 @@
 
 import XCTest
 
-class HUDTestSwiftUI: BaseTest {
-    override var controlName: String { "HUD" }
+class HUDTestSwiftUI: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "HUD"
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
         app.staticTexts["SwiftUI Demo"].tap()
     }
 

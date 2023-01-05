@@ -5,8 +5,16 @@
 
 import XCTest
 
-class BottomCommandingControllerTest: BaseTest {
-    override var controlName: String { "BottomCommandingController" }
+class BottomCommandingControllerTest: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "BottomCommandingController"
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        continueAfterFailure = false
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
+    }
 
     // launch test that ensures the demo app does not crash and is on the correct control page
     func testLaunch() throws {

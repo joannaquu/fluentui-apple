@@ -5,11 +5,14 @@
 
 import XCTest
 
-class ActivityIndicatorTestSwiftUI: BaseTest {
-    override var controlName: String { "ActivityIndicator" }
+class ActivityIndicatorTestSwiftUI: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "ActivityIndicator"
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
         app.staticTexts["SwiftUI Demo"].tap()
     }
 

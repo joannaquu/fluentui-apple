@@ -5,8 +5,16 @@
 
 import XCTest
 
-class DateTimePickerTest: BaseTest {
-    override var controlName: String { "DateTimePicker" }
+class DateTimePickerTest: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "DateTimePicker"
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        continueAfterFailure = false
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
+    }
 
     // launch test that ensures the demo app does not crash and is on the correct control page
     func testLaunch() throws {

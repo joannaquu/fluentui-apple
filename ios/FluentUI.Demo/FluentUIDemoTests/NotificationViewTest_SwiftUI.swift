@@ -5,11 +5,14 @@
 
 import XCTest
 
-class NotificationViewTestSwiftUI: BaseTest {
-    override var controlName: String { "NotificationView" }
+class NotificationViewTestSwiftUI: XCTestCase {
+    let app = XCUIApplication()
+    var controlName: String = "NotificationView"
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        app.launch()
+        navigateToControl(app: app, controlName: controlName)
         app.buttons["Show"].firstMatch.tap()
     }
 
