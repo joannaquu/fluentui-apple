@@ -33,6 +33,7 @@ class NotificationViewTestSwiftUI: BaseTest {
         XCTAssert(app.otherElements.containing(NSPredicate(format: "identifier MATCHES %@", "Notification View with title \"title\", message \"Mail Archived\".*action button titled \"Undo\".*")).element.exists)
 
         attributedTextSwitch.tap()
+        sleep(1)
         XCTAssert(app.otherElements.containing(NSPredicate(format: "identifier MATCHES %@", "Notification View with attributed title \"title\", attributed message \"Mail Archived\".*action button titled \"Undo\".*")).element.exists)
 
         titleTextField.tap(withNumberOfTaps: 3, numberOfTouches: 1)
