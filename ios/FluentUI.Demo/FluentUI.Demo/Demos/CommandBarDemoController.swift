@@ -194,58 +194,38 @@ class CommandBarDemoController: DemoController {
 
         itemCustomizationContainer.addArrangedSubview(UIView()) //Spacer
 
-        let refreshButton = MSFButton(style: .secondary,
-                                      size: .small) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.refreshDefaultBarItems()
-        }
-        refreshButton.state.text = "Refresh 'Default' Bar"
+        let refreshButton = Button(style: .outline)
+        refreshButton.sizeCategory = .small
+        refreshButton.setTitle("Refresh 'Default' Bar", for: .normal)
+        refreshButton.addTarget(self, action: #selector(refreshDefaultBarItems), for: .touchUpInside)
         itemCustomizationContainer.addArrangedSubview(refreshButton)
 
-        let removeTrailingItemButton = MSFButton(style: .secondary,
-                                                 size: .small) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.removeDefaultTrailingBarItems()
-        }
-        removeTrailingItemButton.state.text = "Remove Trailing Button"
+        let removeTrailingItemButton = Button(style: .outline)
+        removeTrailingItemButton.sizeCategory = .small
+        removeTrailingItemButton.setTitle("Remove Trailing Button", for: .normal)
+        removeTrailingItemButton.addTarget(self, action: #selector(removeDefaultTrailingBarItems), for: .touchUpInside)
         itemCustomizationContainer.addArrangedSubview(removeTrailingItemButton)
 
-        let refreshTrailingItemButton = MSFButton(style: .secondary,
-                                                  size: .small) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.refreshDefaultTrailingBarItems()
-        }
-        refreshTrailingItemButton.state.text = "Refresh Trailing Button"
+        let refreshTrailingItemButton = Button(style: .outline)
+        refreshTrailingItemButton.sizeCategory = .small
+        refreshTrailingItemButton.setTitle("Refresh Trailing Button", for: .normal)
+        refreshTrailingItemButton.addTarget(self, action: #selector(refreshDefaultTrailingBarItems), for: .touchUpInside)
         itemCustomizationContainer.addArrangedSubview(refreshTrailingItemButton)
 
-        let removeLeadingItemButton = MSFButton(style: .secondary,
-                                                size: .small) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.removeDefaultLeadingBarItems()
-        }
-        removeLeadingItemButton.state.text = "Remove Leading Button"
+        let removeLeadingItemButton = Button(style: .outline)
+        removeLeadingItemButton.sizeCategory = .small
+        removeLeadingItemButton.setTitle("Remove Leading Button", for: .normal)
+        removeLeadingItemButton.addTarget(self, action: #selector(removeDefaultLeadingBarItems), for: .touchUpInside)
         itemCustomizationContainer.addArrangedSubview(removeLeadingItemButton)
 
-        let refreshLeadingItemButton = MSFButton(style: .secondary,
-                                                 size: .small) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.refreshDefaultLeadingBarItems()
-        }
-        refreshLeadingItemButton.state.text = "Refresh Leading Button"
+        let refreshLeadingItemButton = Button(style: .outline)
+        refreshLeadingItemButton.sizeCategory = .small
+        refreshLeadingItemButton.setTitle("Refresh Leading Button", for: .normal)
+        refreshLeadingItemButton.addTarget(self, action: #selector(refreshDefaultLeadingBarItems), for: .touchUpInside)
         itemCustomizationContainer.addArrangedSubview(refreshLeadingItemButton)
 
-        let resetScrollPositionButton = MSFButtonLegacy(style: .outline)
-        resetScrollPositionButton.size = .small
+        let resetScrollPositionButton = Button(style: .outline)
+        resetScrollPositionButton.sizeCategory = .small
         resetScrollPositionButton.setTitle("Reset Scroll Position", for: .normal)
         resetScrollPositionButton.addTarget(self, action: #selector(resetScrollPosition), for: .touchUpInside)
         itemCustomizationContainer.addArrangedSubview(resetScrollPositionButton)

@@ -17,7 +17,7 @@ public enum ButtonLegacyStyle: Int, CaseIterable {
     case dangerSubtle
 }
 
-// MARK: ButtonSize
+// MARK: ButtonSizeCategory
 
 @objc(MSFButtonLegacySize)
 public enum ButtonLegacySize: Int, CaseIterable {
@@ -221,8 +221,16 @@ public class ButtonLegacyTokenSet: ControlTokenSet<ButtonLegacyTokenSet.Tokens> 
         }
     }
 
+<<<<<<< HEAD:ios/FluentUI/Button/ButtonLegacyTokenSet.swift
     var style: () -> ButtonLegacyStyle
     var size: () -> ButtonLegacySize
+||||||| 4c81ac0e:ios/FluentUI/Button/ButtonTokenSet.swift
+    var style: () -> ButtonStyle
+    var size: () -> ButtonSize
+=======
+    var style: () -> ButtonStyle
+    var size: () -> ButtonSizeCategory
+>>>>>>> main:ios/FluentUI/Button/ButtonTokenSet.swift
 }
 
 extension ButtonLegacyTokenSet {

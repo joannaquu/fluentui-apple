@@ -79,44 +79,11 @@ class NavigationControllerDemoController: DemoController {
         }))
 
         addTitle(text: "Large Title with System style")
-        container.addArrangedSubview(createButton(title: "Show without accessory", action: { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-
-            strongSelf.presentController(withLargeTitle: true,
-                                         style: .system)
-        }))
-        container.addArrangedSubview(createButton(title: "Show without accessory and shadow", action: { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-
-            strongSelf.presentController(withLargeTitle: true,
-                                         style: .system,
-                                         contractNavigationBarOnScroll: false,
-                                         showShadow: false)
-        }))
-        container.addArrangedSubview(createButton(title: "Show with collapsible search bar", action: { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-
-            strongSelf.presentController(withLargeTitle: true,
-                                         style: .system,
-                                         accessoryView: strongSelf.createAccessoryView(with: .darkContent),
-                                         contractNavigationBarOnScroll: true)
-        }))
-        container.addArrangedSubview(createButton(title: "Show with fixed search bar", action: { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-
-            strongSelf.presentController(withLargeTitle: true,
-                                   style: .system,
-                                   accessoryView: strongSelf.createAccessoryView(with: .darkContent),
-                                   contractNavigationBarOnScroll: false)
-        }))
+        container.addArrangedSubview(createButton(title: "Show without accessory", action: #selector(showLargeTitleWithSystemStyle)))
+        container.addArrangedSubview(createButton(title: "Show without accessory and shadow", action: #selector(showLargeTitleWithSystemStyleAndNoShadow)))
+        container.addArrangedSubview(createButton(title: "Show with collapsible search bar", action: #selector(showLargeTitleWithSystemStyleAndShyAccessory)))
+        container.addArrangedSubview(createButton(title: "Show with fixed search bar", action: #selector(showLargeTitleWithSystemStyleAndFixedAccessory)))
+        container.addArrangedSubview(createButton(title: "Show with pill segmented control", action: #selector(showLargeTitleWithSystemStyleAndPillSegment)))
 
         addTitle(text: "Regular Title")
         container.addArrangedSubview(createButton(title: "Show \"system\" with collapsible search bar", action: { [weak self] _ in
@@ -181,13 +148,70 @@ class NavigationControllerDemoController: DemoController {
                 return
             }
 
-            strongSelf.presentController(withLargeTitle: true,
-                                         style: .system,
-                                         accessoryView: strongSelf.createAccessoryView(with: .darkContent),
-                                         showsTopAccessory: true,
-                                         contractNavigationBarOnScroll: false,
-                                         updateStylePeriodically: true)
-        }))
+    @objc func showLargeTitle() {
+        presentController(withLargeTitle: true)
+    }
+
+    @objc func showLargeTitleWithShyAccessory() {
+        presentController(withLargeTitle: true, accessoryView: createAccessoryView(), contractNavigationBarOnScroll: true)
+    }
+
+    @objc func showLargeTitleWithFixedAccessory() {
+        presentController(withLargeTitle: true, accessoryView: createAccessoryView(), contractNavigationBarOnScroll: false)
+    }
+
+    @objc func showLargeTitleWithSystemStyle() {
+        presentController(withLargeTitle: true, style: .system)
+    }
+
+    @objc func showLargeTitleWithSystemStyleAndNoShadow() {
+        presentController(withLargeTitle: true, style: .system, contractNavigationBarOnScroll: false, showShadow: false)
+    }
+
+    @objc func showLargeTitleWithSystemStyleAndShyAccessory() {
+        presentController(withLargeTitle: true, style: .system, accessoryView: createAccessoryView(with: .darkContent), contractNavigationBarOnScroll: true)
+    }
+
+    @objc func showLargeTitleWithSystemStyleAndFixedAccessory() {
+        presentController(withLargeTitle: true, style: .system, accessoryView: createAccessoryView(with: .darkContent), contractNavigationBarOnScroll: false)
+    }
+
+    @objc func showLargeTitleWithSystemStyleAndPillSegment() {
+        presentController(withLargeTitle: true, style: .system, accessoryView: createSegmentedControl(), contractNavigationBarOnScroll: false)
+    }
+
+    @objc func showRegularTitleWithShyAccessory() {
+        presentController(withLargeTitle: false, style: .system, accessoryView: createAccessoryView(with: .darkContent), contractNavigationBarOnScroll: true)
+    }
+
+    @objc func showRegularTitleWithFixedAccessory() {
+        presentController(withLargeTitle: false, accessoryView: createAccessoryView(), contractNavigationBarOnScroll: false)
+    }
+
+    @objc func showLargeTitleWithCustomizedElementSizes() {
+        let controller = presentController(withLargeTitle: true, accessoryView: createAccessoryView())
+        controller.msfNavigationBar.avatarSize = .expanded
+        controller.msfNavigationBar.titleSize = .contracted
+    }
+
+    @objc func showLargeTitleWithCustomizedColor() {
+        presentController(withLargeTitle: true, style: .custom, accessoryView: createAccessoryView())
+    }
+
+    @objc func showLargeTitleWithoutAvatar() {
+        presentController(withLargeTitle: true, style: .primary, accessoryView: createAccessoryView(), showAvatar: false)
+    }
+
+    @objc func showWithTopSearchBar() {
+        presentController(withLargeTitle: true, style: .system, accessoryView: createAccessoryView(with: .darkContent), showsTopAccessory: true, contractNavigationBarOnScroll: false)
+    }
+
+    @objc func showSearchChangingStyleEverySecond() {
+        presentController(withLargeTitle: true, style: .system, accessoryView: createAccessoryView(with: .darkContent), showsTopAccessory: true, contractNavigationBarOnScroll: false, updateStylePeriodically: true)
+    }
+
+    @objc func showLargeTitleWithPillSegment() {
+        presentController(withLargeTitle: true, accessoryView: createSegmentedControl(), contractNavigationBarOnScroll: false)
     }
 
     @discardableResult
@@ -266,6 +290,25 @@ class NavigationControllerDemoController: DemoController {
         return searchBar
     }
 
+    private func createSegmentedControl() -> UIView {
+        let segmentItems: [SegmentItem] = [
+            SegmentItem(title: "First"),
+            SegmentItem(title: "Second")]
+        let pillControl = SegmentedControl(items: segmentItems, style: .onBrandPill)
+        pillControl.shouldSetEqualWidthForSegments = false
+        pillControl.isFixedWidth = false
+        pillControl.contentInset = .zero
+        let stackView = UIStackView()
+        stackView.addArrangedSubview(pillControl)
+        stackView.distribution = .equalCentering
+        stackView.alignment = .center
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "ic_fluent_filter_28"), for: .normal)
+        button.tintColor = UIColor(dynamicColor: view.fluentTheme.aliasTokens.colors[.foregroundLightStatic])
+        stackView.addArrangedSubview(button)
+        return stackView
+    }
+
     private func presentSideDrawer(presentingGesture: UIPanGestureRecognizer? = nil) {
         let meControl = Label(style: .title2, colorStyle: .regular)
         meControl.text = "Me Control goes here"
@@ -296,7 +339,7 @@ extension NavigationControllerDemoController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         // Only show side drawer for the root view controller
         if let controller = presentedViewController as? UINavigationController,
-            gestureRecognizer is UIScreenEdgePanGestureRecognizer && gestureRecognizer.view == controller.view && controller.topViewController != controller.viewControllers.first {
+           gestureRecognizer is UIScreenEdgePanGestureRecognizer && gestureRecognizer.view == controller.view && controller.topViewController != controller.viewControllers.first {
             return false
         }
         return true

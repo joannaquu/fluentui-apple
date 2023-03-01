@@ -67,7 +67,7 @@ class TabBarItemView: UIControl, TokenizedControlInternal {
                 updateLayout()
             }
         }
-	}
+    }
 
     /// The number of lines for the item's title label.
     var numberOfTitleLines: Int = 1 {
@@ -87,6 +87,9 @@ class TabBarItemView: UIControl, TokenizedControlInternal {
             titleLabel.preferredMaxLayoutWidth = newValue
         }
     }
+
+    typealias TokenSetKeyType = EmptyTokenSet.Tokens
+    var tokenSet: EmptyTokenSet = .init()
 
     init(item: TabBarItem, showsTitle: Bool, canResizeImage: Bool = true) {
         self.canResizeImage = canResizeImage
@@ -150,6 +153,8 @@ class TabBarItemView: UIControl, TokenizedControlInternal {
         tokenSetSink = tokenSet.sinkChanges { [weak self] in
             self?.updateAppearance()
         }
+        tokenSet.update(themeView.fluentTheme)
+        updateColors()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -180,8 +185,14 @@ class TabBarItemView: UIControl, TokenizedControlInternal {
         }
     }
 
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        guard let newWindow else {
+            return
+        }
+        tokenSet.update(newWindow.fluentTheme)
+        updateColors()
+    }
 
         tokenSet.update(fluentTheme)
         updateAppearance()
@@ -268,8 +279,13 @@ class TabBarItemView: UIControl, TokenizedControlInternal {
     }
 
     private func updateColors() {
-        titleLabel.highlightedTextColor = UIColor(dynamicColor: tokenSet[.selectedColor].dynamicColor)
-        imageView.tintColor = isSelected ? UIColor(dynamicColor: tokenSet[.selectedColor].dynamicColor) : UIColor(dynamicColor: tokenSet[.unselectedColor].dynamicColor)
+        let selectedColor = UIColor(dynamicColor: tokenSet.fluentTheme.aliasTokens.colors[.brandForeground1])
+        let unselectedImageColor = UIColor(dynamicColor: tokenSet.fluentTheme.aliasTokens.colors[.foreground3])
+        let unselectedTextColor = UIColor(dynamicColor: tokenSet.fluentTheme.aliasTokens.colors[.foreground2])
+        let disabledColor = UIColor(dynamicColor: tokenSet.fluentTheme.aliasTokens.colors[.foregroundDisabled1])
+
+        titleLabel.textColor = isEnabled ? (isSelected ? selectedColor : unselectedTextColor) : disabledColor
+        imageView.tintColor = isEnabled ? (isSelected ? selectedColor : unselectedImageColor) : disabledColor
     }
 
     private func updateImage() {
@@ -284,16 +300,19 @@ class TabBarItemView: UIControl, TokenizedControlInternal {
     private func updateLayout() {
         if isInPortraitMode {
             container.axis = .vertical
-            container.spacing = tokenSet[.spacingVertical].float
-            titleLabel.font = UIFont.fluent(tokenSet[.titleLabelFontPortrait].fontInfo, shouldScale: false)
+            container.spacing = Constants.spacingVertical
+            titleLabel.style = .caption2
+            titleLabel.maxFontSize = 12
 
             if canResizeImage {
                 suggestImageSize = titleLabel.isHidden ? tokenSet[.portraitImageSize].float : tokenSet[.portraitImageWithLabelSize].float
             }
         } else {
             container.axis = .horizontal
-            container.spacing = tokenSet[.spacingHorizontal].float
-            titleLabel.font = UIFont.fluent(tokenSet[.titleLabelFontLandscape].fontInfo, shouldScale: false)
+            container.spacing = Constants.spacingHorizontal
+            titleLabel.style = .caption2
+            titleLabel.maxFontSize = 12
+
             if canResizeImage {
                  suggestImageSize = tokenSet[.landscapeImageSize].float
             }

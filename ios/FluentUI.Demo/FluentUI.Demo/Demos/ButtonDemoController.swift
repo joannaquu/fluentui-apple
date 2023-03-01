@@ -15,22 +15,49 @@ class ButtonDemoController: DemoTableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: ButtonDemoController.cellReuseIdentifier)
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return ButtonDemoSection.allCases.count
-    }
+        for style in ButtonStyle.allCases {
+            for size in ButtonSizeCategory.allCases {
+                addTitle(text: style.description + ", " + size.description)
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ButtonDemoSection.allCases[section].rows.count
-    }
+                let button = createButton(with: style,
+                                          sizeCategory: size,
+                                          title: "Text")
+                let disabledButton = createButton(with: style,
+                                                  sizeCategory: size,
+                                                  title: "Text",
+                                                  isEnabled: false)
+                let titleButtonStack = UIStackView(arrangedSubviews: [button, disabledButton])
+                titleButtonStack.spacing = 20
+                titleButtonStack.distribution = .fillProportionally
+                container.addArrangedSubview(titleButtonStack)
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = ButtonDemoSection.allCases[indexPath.section]
-        let row = section.rows[indexPath.row]
+                if let image = size.image {
+                    let iconButton = createButton(with: style,
+                                                  sizeCategory: size,
+                                                  title: "Text",
+                                                  image: image)
+                    let disabledIconButton = createButton(with: style,
+                                                          sizeCategory: size,
+                                                          title: "Text",
+                                                          image: image,
+                                                          isEnabled: false)
+                    let titleImageButtonStack = UIStackView(arrangedSubviews: [iconButton, disabledIconButton])
+                    titleImageButtonStack.spacing = 20
+                    titleImageButtonStack.distribution = .fillProportionally
+                    container.addArrangedSubview(titleImageButtonStack)
 
-        switch row {
-        case .swiftUIDemo:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as? TableViewCell else {
-                return UITableViewCell()
+                    let iconOnlyButton = createButton(with: style,
+                                                      sizeCategory: size,
+                                                      image: image)
+                    let disabledIconOnlyButton = createButton(with: style,
+                                                              sizeCategory: size,
+                                                              image: image,
+                                                              isEnabled: false)
+                    let imageButtonStack = UIStackView(arrangedSubviews: [iconOnlyButton, disabledIconOnlyButton])
+                    imageButtonStack.spacing = 20
+                    imageButtonStack.distribution = .fillProportionally
+                    container.addArrangedSubview(imageButtonStack)
+                }
             }
             cell.setup(title: "SwiftUI Demo")
             cell.accessoryType = .disclosureIndicator
@@ -80,10 +107,52 @@ class ButtonDemoController: DemoTableViewController {
 
             return cell
         }
+
+        addTitle(text: "With multi-line title")
+        let button = createButton(with: .accent,
+                                  title: "Longer Text Button")
+        let iconButton = createButton(with: .accent,
+                                      title: "Longer Text Button",
+                                      image: ButtonSizeCategory.large.image)
+        addRow(items: [button])
+        addRow(items: [iconButton])
+
+        container.addArrangedSubview(UIView())
+
+        let customButton = createButton(with: .accent, sizeCategory: .small, title: "ToolBar Test Button")
+        let buttonBarItem = UIBarButtonItem.init(customView: customButton)
+        customButton.sizeToFit()
+        toolbarItems = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            buttonBarItem,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return ButtonDemoSection.allCases[section].title
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.isToolbarHidden = false
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isToolbarHidden = true
+    }
+
+    private func createButton(with style: ButtonStyle, sizeCategory: ButtonSizeCategory = .large, title: String? = nil, image: UIImage? = nil, isEnabled: Bool = true) -> Button {
+        let button = Button(style: style)
+        button.sizeCategory = sizeCategory
+        if let title = title {
+            button.setTitle(title, for: .normal)
+            button.titleLabel?.numberOfLines = 0
+        }
+        if let image = image {
+            button.image = image
+        }
+        button.isEnabled = isEnabled
+        button.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+        buttons.append(button)
+        return button
     }
 
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
@@ -179,111 +248,15 @@ class ButtonDemoController: DemoTableViewController {
             }
         }
 
-        var isDemoSection: Bool {
-            return self != .swiftUI
-        }
-
-        var title: String {
-            switch self {
-            case .swiftUI:
-                return "SwiftUI"
-            case .primarySmall:
-                return "Primary Style (small)"
-            case .secondarySmall:
-                return "Secondary Style (small)"
-            case .ghostSmall:
-                return "Ghost Style (small)"
-            case .accentFloatingSmall:
-                return "Accent Floating Style (small)"
-            case .subtleFloatingSmall:
-                return "Subtle Floating Style (small)"
-            case .primaryMedium:
-                return "Primary Style (medium)"
-            case .secondaryMedium:
-                return "Secondary Style (medium)"
-            case .ghostMedium:
-                return "Ghost Style (medium)"
-            case .primaryLarge:
-                return "Primary Style (large)"
-            case .secondaryLarge:
-                return "Secondary Style (large)"
-            case .ghostLarge:
-                return "Ghost Style (large)"
-            case .accentFloatingLarge:
-                return "Accent Floating Style (large)"
-            case .subtleFloatingLarge:
-                return "Subtle Floating Style (large)"
-            }
-        }
-
-        var buttonStyle: MSFButtonStyle {
-            switch self {
-            case .primarySmall,
-                 .primaryMedium,
-                 .primaryLarge:
-                return .primary
-            case .secondarySmall,
-                 .secondaryMedium,
-                 .secondaryLarge:
-                return .secondary
-            case .ghostSmall,
-                 .ghostMedium,
-                 .ghostLarge:
-                return .ghost
-            case .accentFloatingSmall,
-                 .accentFloatingLarge:
-                return .accentFloating
-            case .subtleFloatingSmall,
-                 .subtleFloatingLarge:
-                return .subtleFloating
-            case .swiftUI:
-                preconditionFailure("Row does not have an associated button style")
-            }
-        }
-
-        var image: UIImage? {
-            switch self {
-            case .primarySmall,
-                 .primaryMedium,
-                 .primaryLarge,
-                 .accentFloatingSmall,
-                 .accentFloatingLarge,
-                 .subtleFloatingSmall,
-                 .subtleFloatingLarge:
-                return UIImage(named: "Placeholder_24")!
-            case .secondarySmall,
-                 .secondaryMedium,
-                 .secondaryLarge,
-                 .ghostSmall,
-                 .ghostMedium,
-                 .ghostLarge:
-                return UIImage(named: "Placeholder_20")!
-            case .swiftUI:
-                return nil
-            }
-        }
-
-        var rows: [ButtonDemoRow] {
-            switch self {
-            case .swiftUI:
-                return [.swiftUIDemo]
-            case.primarySmall,
-                .primaryMedium,
-                .primaryLarge,
-                .secondarySmall,
-                .secondaryMedium,
-                .secondaryLarge,
-                .ghostSmall,
-                .ghostMedium,
-                .ghostLarge,
-                .accentFloatingSmall,
-                .accentFloatingLarge,
-                .subtleFloatingSmall,
-                .subtleFloatingLarge:
-                return [.textAndIcon,
-                        .textOnly,
-                        .iconOnly]
-            }
+extension ButtonSizeCategory {
+    var description: String {
+        switch self {
+        case .large:
+            return "large"
+        case .medium:
+            return "medium"
+        case .small:
+            return "small"
         }
     }
 

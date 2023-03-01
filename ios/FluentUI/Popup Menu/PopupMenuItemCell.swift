@@ -116,9 +116,9 @@ class PopupMenuItemCell: TableViewCell, PopupMenuItemTemplateCell {
         }
     }
 
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
-        updateSelectionColors()
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        updateColors()
     }
 
     @objc override func themeDidChange(_ notification: Notification) {
