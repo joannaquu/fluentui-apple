@@ -33,6 +33,8 @@ jobs:
           'macos_build FluentUITestApp-macOS Debug build -resultBundlePath TestResultsMac test -destination "platform=macOS,arch=x86_64"',
           'ios_simulator_build Demo.Development Debug build test -resultBundlePath TestResultsiOS -destination "platform=iOS Simulator,name=iPhone 14 Pro"',
           'ios_device_build Demo.Development Release build',
+          'visionos_simulator_build Demo.Development Debug build',
+          'visionos_device_build Demo.Development Release build'
         ]
 
     steps:

@@ -45,6 +45,28 @@ function ios_device_build()
     return $?
 }
 
+# Run a visionOS simulator xcodebuild invocation with the specified scheme, configuration, and build commands
+#
+# \param $1 scheme
+# \param $2 configuration
+# \param $3+ build commands
+function visionos_simulator_build()
+{
+    invoke_xcodebuild workspace "ios/FluentUI.xcworkspace" "$1" "$2" xrsimulator "${@:3}"
+    return $?
+}
+
+# Run an visionOS device xcodebuild invocation with the specified scheme, configuration, and build commands
+#
+# \param $1 scheme
+# \param $2 configuration
+# \param $3+ build commands
+function visionos_device_build()
+{
+    invoke_xcodebuild workspace "ios/FluentUI.xcworkspace" "$1" "$2" xros "${@:3}"
+    return $?
+}
+
 # Run a macOS build and test with the specified scheme, configuration, and build commands
 # 
 # \param $1 scheme
