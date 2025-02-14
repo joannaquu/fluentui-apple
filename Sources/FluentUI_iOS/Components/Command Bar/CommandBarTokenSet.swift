@@ -120,4 +120,7 @@ extension CommandBarTokenSet {
 
     /// The padding between the Command Bar Button image and title.
     static let buttonImagePadding: CGFloat = GlobalTokens.spacing(.size60)
+
+    /// The height of the Command Bar Button.
+    static let buttonHeight: CGFloat = GlobalTokens.spacing(.size400)
 }

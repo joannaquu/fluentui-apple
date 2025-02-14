@@ -67,7 +67,7 @@ class CommandBarCommandGroupsView: UIView {
                 return button
             }
 
-            let group = CommandBarButtonGroupView(buttons: buttons, tokenSet: tokenSet)
+            let group = CommandBarButtonGroupView(buttons: buttons, label: "Group", tokenSet: tokenSet)
 
             for item in items {
                 if let button = itemsToButtonsMap[item] {

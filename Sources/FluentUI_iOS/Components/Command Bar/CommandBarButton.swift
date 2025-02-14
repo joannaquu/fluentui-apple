@@ -41,6 +41,7 @@ class CommandBarButton: UIButton {
         super.init(frame: .zero)
 
         translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: CommandBarTokenSet.buttonHeight).isActive = true
 
         if let makeCustomButtonView = item.customControlView {
             addCustomView(makeCustomButtonView())
