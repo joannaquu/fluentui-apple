@@ -180,7 +180,8 @@ class CommandBarDemoController: DemoController {
 
         container.addArrangedSubview(createLabelWithText("Default"))
 
-        let commandBar = CommandBar(itemGroups: createItemGroups(), leadingItemGroups: [[newItem(for: .keyboard)]])
+        let commandBar = CommandBar(itemGroups: createItemGroups(),
+                                    leadingItemGroups: [CommandBarItemGroup(items: [newItem(for: .keyboard)])])
         commandBar.delegate = self
         commandBar.translatesAutoresizingMaskIntoConstraints = false
         commandBar.backgroundColor = view.fluentTheme.color(.background3)
@@ -276,7 +277,9 @@ class CommandBarDemoController: DemoController {
 
         container.addArrangedSubview(createLabelWithText("With Fixed Button"))
 
-        let fixedButtonCommandBar = CommandBar(itemGroups: createItemGroups(), leadingItemGroups: [[newItem(for: .copy)]], trailingItemGroups: [[newItem(for: .keyboard)]])
+        let fixedButtonCommandBar = CommandBar(itemGroups: createItemGroups(),
+                                               leadingItemGroups: [CommandBarItemGroup(items: [newItem(for: .copy)])],
+                                               trailingItemGroups: [CommandBarItemGroup(items: [newItem(for: .keyboard)])])
         fixedButtonCommandBar.translatesAutoresizingMaskIntoConstraints = false
         fixedButtonCommandBar.backgroundColor = view.fluentTheme.color(.background3)
         container.addArrangedSubview(fixedButtonCommandBar)
@@ -295,7 +298,8 @@ class CommandBarDemoController: DemoController {
 
         container.addArrangedSubview(textFieldContainer)
 
-        let accessoryCommandBar = CommandBar(itemGroups: createItemGroups(), trailingItemGroups: [[newItem(for: .keyboard)]])
+        let accessoryCommandBar = CommandBar(itemGroups: createItemGroups(),
+                                             trailingItemGroups: [CommandBarItemGroup(items: [newItem(for: .keyboard)])])
         accessoryCommandBar.translatesAutoresizingMaskIntoConstraints = false
 #if os(iOS)
         textField.inputAccessoryView = accessoryCommandBar
@@ -339,17 +343,15 @@ class CommandBarDemoController: DemoController {
             ]
         ]
 
-        let itemGroups: [CommandBarItemGroup] = commandGroups.map { commandGroup in
-            commandGroup.map { command in
-                newItem(for: command)
-            }
+        let itemGroups: [CommandBarItemGroup] = commandGroups.map {
+            CommandBarItemGroup(items: $0.map { newItem(for: $0) })
         }
 
-        itemGroups[0][1].isEnabled = false
-        itemGroups[2][0].isEnabled = false
+        itemGroups[0].items[1].isEnabled = false
+        itemGroups[2].items[0].isEnabled = false
 
         // Copy item
-        let copyItem = itemGroups[4][0]
+        let copyItem = itemGroups[4].items[0]
         copyItem.menu = UIMenu(children: [UIAction(title: "Copy Image", image: UIImage(named: "copy24Regular"), handler: { _ in }),
                                           UIAction(title: "Copy Text", image: UIImage(named: "text24Regular"), handler: { _ in })])
         copyItem.showsMenuAsPrimaryAction = true
@@ -425,7 +427,7 @@ class CommandBarDemoController: DemoController {
     }
 
     @objc func itemEnabledValueChanged(sender: UISwitch!) {
-        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[0][0] else {
+        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[0].items[0] else {
             return
         }
 
@@ -433,7 +435,7 @@ class CommandBarDemoController: DemoController {
     }
 
     @objc func disableMenuItemValueChanged(sender: UISwitch!) {
-        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[4][0] else {
+        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[4].items[0] else {
             return
         }
 
@@ -449,7 +451,7 @@ class CommandBarDemoController: DemoController {
     }
 
     @objc func itemHiddenValueChanged(sender: UISwitch!) {
-        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[5][0] else {
+        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[5].items[0] else {
             return
         }
 
@@ -457,7 +459,7 @@ class CommandBarDemoController: DemoController {
     }
 
     @objc func deleteAccentImageValueChange(sender: UISwitch!) {
-        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[5][0] else {
+        guard let item: CommandBarItem = defaultCommandBar?.itemGroups[5].items[0] else {
             return
         }
 
@@ -481,7 +483,7 @@ class CommandBarDemoController: DemoController {
     }
 
     @objc func refreshDefaultTrailingBarItems(sender: UIButton!) {
-        defaultCommandBar?.trailingItemGroups = [[newItem(for: .keyboard)]]
+        defaultCommandBar?.trailingItemGroups = [CommandBarItemGroup(items: [newItem(for: .keyboard)])]
     }
 
     @objc func removeDefaultLeadingBarItems(sender: UIButton!) {
@@ -489,7 +491,7 @@ class CommandBarDemoController: DemoController {
     }
 
     @objc func refreshDefaultLeadingBarItems(sender: UIButton!) {
-        defaultCommandBar?.leadingItemGroups = [[newItem(for: .keyboard)]]
+        defaultCommandBar?.leadingItemGroups = [CommandBarItemGroup(items: [newItem(for: .keyboard)])]
     }
 
     @objc func resetScrollPosition(sender: UIButton!) {

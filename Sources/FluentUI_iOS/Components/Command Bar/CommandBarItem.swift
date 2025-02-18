@@ -5,7 +5,16 @@
 
 import UIKit
 
-public typealias CommandBarItemGroup = [CommandBarItem]
+@objc(MSFCommandBarItemGroup)
+public class CommandBarItemGroup: NSObject {
+    public var items: [CommandBarItem]
+    public var label: String
+
+    @objc public init(items: [CommandBarItem], label: String = "") {
+        self.items = items
+        self.label = label
+    }
+}
 
 @objc(MSFCommandBarItem)
 open class CommandBarItem: NSObject {

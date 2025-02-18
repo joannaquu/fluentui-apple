@@ -57,8 +57,7 @@ public class CommandBar: UIView, TokenizedControl {
             guard let leadingItem = leadingItem else {
                 return nil
             }
-
-            return [[leadingItem]]
+            return [CommandBarItemGroup(items: [leadingItem])]
         }()
 
         let trailingItems: [CommandBarItemGroup]? = {
@@ -66,7 +65,7 @@ public class CommandBar: UIView, TokenizedControl {
                 return nil
             }
 
-            return [[trailingItem]]
+            return [CommandBarItemGroup(items: [trailingItem])]
         }()
 
         self.init(itemGroups: itemGroups,

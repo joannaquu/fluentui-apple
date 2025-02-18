@@ -59,17 +59,17 @@ class CommandBarCommandGroupsView: UIView {
     /// Refreshes the `buttonGroupViews` array of `CommandBarButtonGroupView`s that are displayed in the view
     func updateButtonGroupViews() {
         updateItemsToButtonsMap()
-        buttonGroupViews = itemGroups.map { items in
-            let buttons: [CommandBarButton] = items.compactMap { item in
+        buttonGroupViews = itemGroups.map { itemGroup in
+            let buttons: [CommandBarButton] = itemGroup.items.compactMap { item in
                 guard let button = itemsToButtonsMap[item] else {
                     preconditionFailure("Button is not initialized in map")
                 }
                 return button
             }
 
-            let group = CommandBarButtonGroupView(buttons: buttons, label: "Group", tokenSet: tokenSet)
+            let group = CommandBarButtonGroupView(buttons: buttons, label: itemGroup.label, tokenSet: tokenSet)
 
-            for item in items {
+            for item in itemGroup.items {
                 if let button = itemsToButtonsMap[item] {
                     item.propertyChangedUpdateBlock = { _, shouldUpdateGroupState in
                         button.updateState()
@@ -120,7 +120,7 @@ class CommandBarCommandGroupsView: UIView {
 
     /// Refreshes the `itemsToButtonsMap` of `CommandBarItem`s to their corresponding `CommandBarButton`
     private func updateItemsToButtonsMap() {
-        let allButtons = itemGroups.flatMap({ $0 }).map({ createButton(forItem: $0, isPersistSelection: buttonsPersistSelection) })
+        let allButtons = itemGroups.flatMap({ $0.items }).map({ createButton(forItem: $0, isPersistSelection: buttonsPersistSelection) })
         itemsToButtonsMap = Dictionary(uniqueKeysWithValues: allButtons.map { ($0.item, $0) })
     }
 

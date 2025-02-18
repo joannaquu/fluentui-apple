@@ -68,12 +68,9 @@ class CommandBarButtonGroupView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
 
         stackView.addArrangedSubview(buttonStackView)
-        if !label.isEmpty {
-            stackView.addArrangedSubview(groupLabel)
-        }
+        stackView.addArrangedSubview(groupLabel)
         addSubview(stackView)
 
         NSLayoutConstraint.activate([

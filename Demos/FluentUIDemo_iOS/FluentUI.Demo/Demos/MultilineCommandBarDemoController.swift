@@ -43,25 +43,20 @@ class MultilineCommandBarDemoController: DemoController {
             }
         }
         let compactRows: [MultilineCommandBarRow] = [
-            MultilineCommandBarRow(itemGroups: [[commandBarItems[0]],
-                                                [commandBarItems[1]],
-                                                [commandBarItems[2]],
-                                                [commandBarItems[3]]], isScrollable: true),
-            MultilineCommandBarRow(itemGroups: [Array(commandBarItems[4...7])]),
-            MultilineCommandBarRow(itemGroups: [Array(commandBarItems[8...11])]),
-            MultilineCommandBarRow(itemGroups: [Array(commandBarItems[12...13]),
-                                                [commandBarItems[14]]])
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[0...3]))], isScrollable: true),
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[4...7]))]),
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[8...11]))]),
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[12...13]))]),
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[12...13])),
+                                                CommandBarItemGroup(items: [commandBarItems[14]])])
         ]
 
         let regularRows: [MultilineCommandBarRow] = [
-            MultilineCommandBarRow(itemGroups: [[commandBarItems[0]],
-                                                [commandBarItems[1]],
-                                                [commandBarItems[2]],
-                                                [commandBarItems[3]]], isScrollable: true),
-            MultilineCommandBarRow(itemGroups: [Array(commandBarItems[4...7]),
-                                                Array(commandBarItems[8...11]),
-                                                Array(commandBarItems[12...13]),
-                                                [commandBarItems[14]]])
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[0...3]))], isScrollable: true),
+            MultilineCommandBarRow(itemGroups: [CommandBarItemGroup(items: Array(commandBarItems[4...7])),
+                                                CommandBarItemGroup(items: Array(commandBarItems[8...11])),
+                                                CommandBarItemGroup(items: Array(commandBarItems[12...13])),
+                                                CommandBarItemGroup(items: [commandBarItems[14]])])
         ]
 
         return MultilineCommandBar(compactRows: compactRows, regularRows: regularRows)
