@@ -225,7 +225,7 @@ public class CommandBar: UIView, Shadowable, TokenizedControl {
     }
 
     /// Whether or not the `CommandBar` is scrollable
-    public var isScrollable: Bool = true {
+    @objc public var isScrollable: Bool = true {
         didSet {
             updateViewHierarchy()
             updateMainCommandGroupsViewConstraints()
